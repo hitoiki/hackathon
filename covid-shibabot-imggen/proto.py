@@ -28,8 +28,7 @@ def Gradation (code1,code2,degree):
         newcolor = '#%02X%02X%02X' % ( int((c2[0]-c1[0])*degree + c1[0]) , int((c2[1]-c1[1])*degree + c1[1] ), int ((c2[2]-c1[2])*degree + c1[2]) )
         return newcolor
 
-#Grids = [Image.new('RGBA', (65, 65), '#CCCCCC'),Image.new('RGBA', (65, 65), '#F8CFCA'),Image.new('RGBA', (65, 65), '#F3AAA1'),Image.new('RGBA', (65, 65), '#EE6351')]
-Grids =  [SoftSquare((65, 65),40, '#CCCCCC'),SoftSquare((65, 65),40, '#F8CFCA'),SoftSquare((65, 65),40, '#F3AAA1'),SoftSquare((65, 65),40, '#EE6351')]
+#Grids =  [SoftSquare((65, 65),40, '#CCCCCC'),SoftSquare((65, 65),40, '#F8CFCA'),SoftSquare((65, 65),40, '#F3AAA1'),SoftSquare((65, 65),40, '#EE6351')]
 GridPalette = ['#CCCCCC', '#F8CFCA' , '#F3AAA1', '#EE6351']
 Yobifont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 20)
 Nihonfont = ImageFont.truetype("./meiryo.ttc", 24)
@@ -44,6 +43,7 @@ YOBI2_POS = (394,242)
 YOBI3_POS = (648,242)
 STREAK_POS = (380,55)
 NAME_POS = (64,20)
+WAKU_WIDTH = 3
 
 def Calendar(Activity,streak,name,day,AvarageMode):
     Canbas = Image.new('RGBA', (829, 512), '#F2F2F2')
@@ -51,13 +51,17 @@ def Calendar(Activity,streak,name,day,AvarageMode):
     #ここからリストの長さが21であるのが前提
     Xtarget = STARTX
     Ytarget = STARTY
+    LatestGrid = (Xtarget,Ytarget)
     for i in range(0,21):
         if Activity[i] == -1:
             pass
         else:
             #Canbas.paste(Grids[Activity[i]],(Xtarget,Ytarget),Grids[Activity[i]])
-            TargetsGrid = SoftSquare( (65, 65), 40, Gradation( GridPalette[int(Activity[i])] , GridPalette[int(min((Activity[i])+1,3))] , Activity[i]-int(Activity[i]) ) )
+            GridColor = Gradation( GridPalette[int(Activity[i])] , GridPalette[int(min((Activity[i])+1,3))] , Activity[i]-int(Activity[i]) )
+            TargetsGrid = SoftSquare((65, 65), 40, GridColor)
             Canbas.paste(TargetsGrid, (Xtarget,Ytarget) ,TargetsGrid)
+            LatestGrid = (Xtarget,Ytarget)
+
         if i%7 == 6:
             Xtarget = STARTX
             Ytarget +=  DISTANCE
@@ -65,6 +69,10 @@ def Calendar(Activity,streak,name,day,AvarageMode):
             Xtarget += DISTANCE     
     else:
         pass
+    #最新の日時なら枠で囲う
+    flame = SoftSquare((65,65),40,'white')
+    flame.paste(SoftSquare((65-2*WAKU_WIDTH,65-2*WAKU_WIDTH),40-1.23 * WAKU_WIDTH,'black'),(WAKU_WIDTH,WAKU_WIDTH),SoftSquare((65-2*WAKU_WIDTH,65-2*WAKU_WIDTH),40-1.23 * WAKU_WIDTH,'black'))
+    Canbas.paste(SoftSquare((65,65),40,'white'),LatestGrid,flame.convert('L'))
     #日時の処理
     dt = datetime.datetime.strptime(day, '%Y%m%d') 
     locale.setlocale(locale.LC_TIME, 'en_US.UTF-8')
@@ -80,7 +88,7 @@ def Calendar(Activity,streak,name,day,AvarageMode):
         dc.text(YOBI1_POS, (dt - datetime.timedelta(days=6)).strftime('%a'), fill='#737373', spacing=10, align='right',font=Yobifont)
         dc.text(YOBI2_POS, (dt - datetime.timedelta(days=3)).strftime('%a'), fill='#737373', spacing=10, align='right',font=Yobifont)
         dc.text(YOBI3_POS, dt.strftime('%a'), fill='#737373', spacing=10, align='right',font=Yobifont)
-    #Nihonfont = ImageFont.truetype("./meiryo.ttc", 24)
+    #平均モードか否かで文面を変える
     if AvarageMode:
         dc.text(NAME_POS,'%s' %(name), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 17))
         textwidth = dc.textsize(format(streak, '.1f'),font=Streakfont)[0]
@@ -91,10 +99,11 @@ def Calendar(Activity,streak,name,day,AvarageMode):
         textwidth = dc.textsize(format(streak, '.0f'),font=Streakfont)[0]
         dc.text((DAY_POS[0] + textwidth,DAY_POS[1]),'日', fill = '#737373', spacing=10,align = 'right', font = ImageFont.truetype("./meiryob.ttc", 40))
         dc.text((STREAK_POS[0] , STREAK_POS[1]),format(streak, '.0f'), fill='#EE7361',font=Streakfont)
+    
     dc.text((NAME_POS[0],NAME_POS[1]+27),dt.strftime('%Y年%m月%d日現在'), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryo.ttc", 13))
     dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 24))
     #終わったので表示
     return Canbas
     
 
-Calendar([0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,2,0,1,2,-1,-1],1234.547,"xxx","20190510",False).show()
+Calendar([0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,2,0,1,2,1,-1],1234.547,"xxx","20190510",False).show()
