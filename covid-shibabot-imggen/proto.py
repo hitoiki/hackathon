@@ -1,4 +1,4 @@
-# coding:utf_8
+# -*- coding: utf-8 -*-
 from PIL import Image,ImageDraw,ImageFont
 
 #怒涛の定数定義
@@ -48,7 +48,7 @@ def Calendar(Activity,streak,todaydate,name,day):
     dc.text(YOBI1_POS, 'Sun', fill='black', spacing=10, align='right',font=Yobifont)
     dc.text(YOBI2_POS, 'Wed', fill='black', spacing=10, align='right',font=Yobifont)
     dc.text(YOBI3_POS, 'Sat', fill='black', spacing=10, align='right',font=Yobifont)
-    Hikifont = ImageFont.truetype("./FontArial/Arial.ttf", 24)
+    Hikifont = ImageFont.truetype("./meiryo.ttc", 24)
     dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='black', spacing=10, align='right',font=Hikifont)
     dc.text(DAY_POS,'日', fill = 'black', spacing=10,align = 'right', font = Hikifont)
     Streakfont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 120)
