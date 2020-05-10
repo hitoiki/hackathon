@@ -2,6 +2,7 @@
 from PIL import Image,ImageDraw,ImageFont
 import datetime
 import locale
+import math
 
 #怒涛の定数定義
 def SoftSquare (posision,roundness,color):
@@ -15,8 +16,21 @@ def SoftSquare (posision,roundness,color):
     d.rectangle([(0, roundness/2), (posision[0], posision[1]-roundness/2)], fill=color)
     d.rectangle([(roundness/2,0), (posision[0]-roundness/2, posision[1])], fill=color)
     return Img
+
+def Gradation (code1,code2,degree):
+    if degree == 0:
+        return code1
+    elif degree == 1:
+        return code2
+    else:
+        c1 = (int(code1[1:3],16),int(code1[3:5],16),int(code1[5:7],16))
+        c2 = (int(code2[1:3],16),int(code2[3:5],16),int(code2[5:7],16)) 
+        newcolor = '#%02X%02X%02X' % ( int((c2[0]-c1[0])*degree + c1[0]) , int((c2[1]-c1[1])*degree + c1[1] ), int ((c2[2]-c1[2])*degree + c1[2]) )
+        return newcolor
+
 #Grids = [Image.new('RGBA', (65, 65), '#CCCCCC'),Image.new('RGBA', (65, 65), '#F8CFCA'),Image.new('RGBA', (65, 65), '#F3AAA1'),Image.new('RGBA', (65, 65), '#EE6351')]
 Grids =  [SoftSquare((65, 65),40, '#CCCCCC'),SoftSquare((65, 65),40, '#F8CFCA'),SoftSquare((65, 65),40, '#F3AAA1'),SoftSquare((65, 65),40, '#EE6351')]
+GridPalette = ['#CCCCCC', '#F8CFCA' , '#F3AAA1', '#EE6351']
 Yobifont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 20)
 Nihonfont = ImageFont.truetype("./meiryo.ttc", 24)
 Streakfont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 120)
@@ -24,11 +38,11 @@ STARTX = 131
 STARTY = 266
 DISTANCE = 83
 HIKIKOMO_POS = (205,105)
-DAY_POS = (500,140)
+DAY_POS = (410,140)
 YOBI1_POS = (144,242)
 YOBI2_POS = (394,242)
 YOBI3_POS = (648,242)
-STREAK_POS = (410,55)
+STREAK_POS = (380,55)
 NAME_POS = (64,20)
 
 def Calendar(Activity,streak,name,day):
@@ -41,7 +55,9 @@ def Calendar(Activity,streak,name,day):
         if Activity[i] == -1:
             pass
         else:
-            Canbas.paste(Grids[Activity[i]],(Xtarget,Ytarget),Grids[Activity[i]])
+            #Canbas.paste(Grids[Activity[i]],(Xtarget,Ytarget),Grids[Activity[i]])
+            TargetsGrid = SoftSquare( (65, 65), 40, Gradation( GridPalette[int(Activity[i])] , GridPalette[int(min((Activity[i])+1,3))] , Activity[i]-int(Activity[i]) ) )
+            Canbas.paste(TargetsGrid, (Xtarget,Ytarget) ,TargetsGrid)
         if i%7 == 6:
             Xtarget = STARTX
             Ytarget +=  DISTANCE
@@ -65,17 +81,16 @@ def Calendar(Activity,streak,name,day):
         dc.text(YOBI2_POS, (dt - datetime.timedelta(days=3)).strftime('%a'), fill='#737373', spacing=10, align='right',font=Yobifont)
         dc.text(YOBI3_POS, dt.strftime('%a'), fill='#737373', spacing=10, align='right',font=Yobifont)
     #Nihonfont = ImageFont.truetype("./meiryo.ttc", 24)
-    dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 24))
-    dc.text(DAY_POS,'日', fill = '#737373', spacing=10,align = 'right', font = ImageFont.truetype("./meiryob.ttc", 40))
     dc.text(NAME_POS,'@%s さんの自宅警備勤怠記録' %(name), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 17))
     dc.text((NAME_POS[0],NAME_POS[1]+27),dt.strftime('%Y年%m月%d日現在'), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryo.ttc", 13))
+    dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 24))
+    textwidth = dc.textsize(format(streak, '.1f'),font=Streakfont)[0]
+    dc.text((DAY_POS[0] + textwidth,DAY_POS[1]),'日', fill = '#737373', spacing=10,align = 'right', font = ImageFont.truetype("./meiryob.ttc", 40))
     #Streakfont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 120)
-    textwidth = dc.textsize('%d' %(streak),font=Streakfont)[0]
-    dc.text((STREAK_POS[0] - textwidth/2 , STREAK_POS[1]),'%d' %(streak), fill='#EE7361',font=Streakfont)
+
+    dc.text((STREAK_POS[0] , STREAK_POS[1]),format(streak, '.1f'), fill='#EE7361',font=Streakfont)
     #終わったので表示
     return Canbas
     
 
-Calendar([0,1,2,3,3,2,3,3,0,1,2,3,0,1,2,3,0,1,2,-1,-1],12,"xxx","20190510").show()
-
-
+Calendar([0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,2,0,1,2,-1,-1],1234.547,"xxx","20190510").show()
