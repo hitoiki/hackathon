@@ -81,7 +81,7 @@ def Calendar(Activity,streak,name,day,AvarageMode):
     #Yobifont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 20)
     #カレンダーが満タンなら曜日をずらす
     if Activity[20] == -1:
-        dc.text(YOBI1_POS, 'San', fill='#737373', spacing=10, align='right',font=Yobifont)
+        dc.text(YOBI1_POS, 'Sun', fill='#737373', spacing=10, align='right',font=Yobifont)
         dc.text(YOBI2_POS, 'Wed', fill='#737373', spacing=10, align='right',font=Yobifont)
         dc.text(YOBI3_POS, 'Sat', fill='#737373', spacing=10, align='right',font=Yobifont)
     else:
