@@ -45,7 +45,7 @@ YOBI3_POS = (648,242)
 STREAK_POS = (380,55)
 NAME_POS = (64,20)
 
-def Calendar(Activity,streak,name,day):
+def Calendar(Activity,streak,name,day,AvarageMode):
     Canbas = Image.new('RGBA', (829, 512), '#F2F2F2')
 
     #ここからリストの長さが21であるのが前提
@@ -81,7 +81,10 @@ def Calendar(Activity,streak,name,day):
         dc.text(YOBI2_POS, (dt - datetime.timedelta(days=3)).strftime('%a'), fill='#737373', spacing=10, align='right',font=Yobifont)
         dc.text(YOBI3_POS, dt.strftime('%a'), fill='#737373', spacing=10, align='right',font=Yobifont)
     #Nihonfont = ImageFont.truetype("./meiryo.ttc", 24)
-    dc.text(NAME_POS,'@%s さんの自宅警備勤怠記録' %(name), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 17))
+    if AvarageMode:
+        dc.text(NAME_POS,'%s' %(name), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 17))
+    else:
+        dc.text(NAME_POS,'%s さんの自宅警備勤怠記録' %(name), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 17))
     dc.text((NAME_POS[0],NAME_POS[1]+27),dt.strftime('%Y年%m月%d日現在'), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryo.ttc", 13))
     dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 24))
     textwidth = dc.textsize(format(streak, '.1f'),font=Streakfont)[0]
@@ -93,4 +96,4 @@ def Calendar(Activity,streak,name,day):
     return Canbas
     
 
-Calendar([0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,2,0,1,2,-1,-1],1234.547,"xxx","20190510").show()
+Calendar([0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6,1.8,2,2.2,2.4,2.6,2.8,2,0,1,2,-1,-1],1234.547,"xxx","20190510",False).show()
