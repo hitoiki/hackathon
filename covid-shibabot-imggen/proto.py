@@ -44,14 +44,14 @@ def Calendar(Activity,streak,todaydate,name,day):
         pass
     #文字を書く処理
     dc = ImageDraw.Draw(Canbas)
-    Yobifont = ImageFont.truetype("/home/hitoiki103/covid-shibabot-imggen/FontRoboto/Roboto-Bold.ttf", 20)
+    Yobifont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 20)
     dc.text(YOBI1_POS, 'Sun', fill='black', spacing=10, align='right',font=Yobifont)
     dc.text(YOBI2_POS, 'Wed', fill='black', spacing=10, align='right',font=Yobifont)
     dc.text(YOBI3_POS, 'Sat', fill='black', spacing=10, align='right',font=Yobifont)
-    Hikifont = ImageFont.truetype("/home/hitoiki103/covid-shibabot-imggen/FontArial/Arial.ttf", 24)
+    Hikifont = ImageFont.truetype("./FontArial/Arial.ttf", 24)
     dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='black', spacing=10, align='right',font=Hikifont)
     dc.text(DAY_POS,'日', fill = 'black', spacing=10,align = 'right', font = Hikifont)
-    Streakfont = ImageFont.truetype("/home/hitoiki103/covid-shibabot-imggen/FontRoboto/Roboto-Bold.ttf", 120)
+    Streakfont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 120)
     dc.text(STREAK_POS,"%d" %(streak), fill='#EE7361', spacing=10, align='right',font=Streakfont)
     #終わったので表示
     Canbas.show()
