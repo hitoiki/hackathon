@@ -4,7 +4,6 @@ import datetime
 import locale
 
 #怒涛の定数定義
-Canbas = Image.new('RGBA', (829, 512), '#F2F2F2')
 def SoftSquare (posision,roundness,color):
     #丸みのついた四角を生成する
     Img = Image.new('RGBA', (posision[0],posision[1]), 0)
@@ -33,6 +32,8 @@ STREAK_POS = (410,55)
 NAME_POS = (64,20)
 
 def Calendar(Activity,streak,name,day):
+    Canbas = Image.new('RGBA', (829, 512), '#F2F2F2')
+
     #ここからリストの長さが21であるのが前提
     Xtarget = STARTX
     Ytarget = STARTY
@@ -66,15 +67,15 @@ def Calendar(Activity,streak,name,day):
     #Nihonfont = ImageFont.truetype("./meiryo.ttc", 24)
     dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 24))
     dc.text(DAY_POS,'日', fill = '#737373', spacing=10,align = 'right', font = ImageFont.truetype("./meiryob.ttc", 40))
-    dc.text(NAME_POS,'%s さんの自宅警備勤怠記録' %(name), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 17))
+    dc.text(NAME_POS,'@%s さんの自宅警備勤怠記録' %(name), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 17))
     dc.text((NAME_POS[0],NAME_POS[1]+27),dt.strftime('%Y年%m月%d日現在'), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryo.ttc", 13))
     #Streakfont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 120)
     textwidth = dc.textsize('%d' %(streak),font=Streakfont)[0]
     dc.text((STREAK_POS[0] - textwidth/2 , STREAK_POS[1]),'%d' %(streak), fill='#EE7361',font=Streakfont)
     #終わったので表示
-    Canbas.show()
+    return Canbas
     
 
-Calendar([0,1,2,3,3,2,3,3,0,1,2,3,0,1,2,3,0,1,2,-1,-1],12,"xxx","20190510")
+Calendar([0,1,2,3,3,2,3,3,0,1,2,3,0,1,2,3,0,1,2,-1,-1],12,"xxx","20190510").show()
 
 
