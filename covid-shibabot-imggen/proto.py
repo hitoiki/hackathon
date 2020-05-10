@@ -101,7 +101,7 @@ def Calendar(Activity,streak,name,day,AvarageMode):
         dc.text((STREAK_POS[0] , STREAK_POS[1]),format(streak, '.0f'), fill='#EE7361',font=Streakfont)
     
     dc.text((NAME_POS[0],NAME_POS[1]+27),dt.strftime('%Y年%m月%d日現在'), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryo.ttc", 13))
-    dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 24))
+    dc.text(HIKIKOMO_POS, '連続勤務\nストリーク', fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 24))
     #終わったので表示
     return Canbas
     
