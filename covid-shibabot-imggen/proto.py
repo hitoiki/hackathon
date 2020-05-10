@@ -83,15 +83,16 @@ def Calendar(Activity,streak,name,day,AvarageMode):
     #Nihonfont = ImageFont.truetype("./meiryo.ttc", 24)
     if AvarageMode:
         dc.text(NAME_POS,'%s' %(name), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 17))
+        textwidth = dc.textsize(format(streak, '.1f'),font=Streakfont)[0]
+        dc.text((DAY_POS[0] + textwidth,DAY_POS[1]),'日', fill = '#737373', spacing=10,align = 'right', font = ImageFont.truetype("./meiryob.ttc", 40))
+        dc.text((STREAK_POS[0] , STREAK_POS[1]),format(streak, '.1f'), fill='#EE7361',font=Streakfont)
     else:
         dc.text(NAME_POS,'%s さんの自宅警備勤怠記録' %(name), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 17))
+        textwidth = dc.textsize(format(streak, '.0f'),font=Streakfont)[0]
+        dc.text((DAY_POS[0] + textwidth,DAY_POS[1]),'日', fill = '#737373', spacing=10,align = 'right', font = ImageFont.truetype("./meiryob.ttc", 40))
+        dc.text((STREAK_POS[0] , STREAK_POS[1]),format(streak, '.0f'), fill='#EE7361',font=Streakfont)
     dc.text((NAME_POS[0],NAME_POS[1]+27),dt.strftime('%Y年%m月%d日現在'), fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryo.ttc", 13))
     dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='#737373', spacing=10, align='right',font = ImageFont.truetype("./meiryob.ttc", 24))
-    textwidth = dc.textsize(format(streak, '.1f'),font=Streakfont)[0]
-    dc.text((DAY_POS[0] + textwidth,DAY_POS[1]),'日', fill = '#737373', spacing=10,align = 'right', font = ImageFont.truetype("./meiryob.ttc", 40))
-    #Streakfont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 120)
-
-    dc.text((STREAK_POS[0] , STREAK_POS[1]),format(streak, '.1f'), fill='#EE7361',font=Streakfont)
     #終わったので表示
     return Canbas
     
