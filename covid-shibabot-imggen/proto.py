@@ -1,4 +1,4 @@
-# coding:utf_8
+# -*- coding: utf-8 -*-
 from PIL import Image,ImageDraw,ImageFont
 import datetime
 import locale
@@ -49,7 +49,7 @@ def Calendar(Activity,streak,name,day):
     locale.setlocale(locale.LC_TIME, 'en_US.UTF-8')
     #文字を書く処理
     dc = ImageDraw.Draw(Canbas)
-    Yobifont = ImageFont.truetype("/home/hitoiki103/Github/hackathon/covid-shibabot-imggen/FontRoboto/Roboto-Bold.ttf", 20)
+    Yobifont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 20)
     #カレンダーが満タンなら曜日をずらす
     if Activity[20] == -1:
         dc.text(YOBI1_POS, 'San', fill='black', spacing=10, align='right',font=Yobifont)
@@ -59,10 +59,10 @@ def Calendar(Activity,streak,name,day):
         dc.text(YOBI1_POS, (dt - datetime.timedelta(days=6)).strftime('%a'), fill='black', spacing=10, align='right',font=Yobifont)
         dc.text(YOBI2_POS, (dt - datetime.timedelta(days=3)).strftime('%a'), fill='black', spacing=10, align='right',font=Yobifont)
         dc.text(YOBI3_POS, dt.strftime('%a'), fill='black', spacing=10, align='right',font=Yobifont)
-    Hikifont = ImageFont.truetype("/home/hitoiki103/Github/hackathon/covid-shibabot-imggen/FontRoboto/Roboto-Bold.ttf", 24)
+    Hikifont = ImageFont.truetype("./meiryo.ttc", 24)
     dc.text(HIKIKOMO_POS, '引きこもり\nストリーク', fill='black', spacing=10, align='right',font=Hikifont)
     dc.text(DAY_POS,'日', fill = 'black', spacing=10,align = 'right', font = Hikifont)
-    Streakfont = ImageFont.truetype("/home/hitoiki103/Github/hackathon/covid-shibabot-imggen/FontRoboto/Roboto-Bold.ttf", 120)
+    Streakfont = ImageFont.truetype("./FontRoboto/Roboto-Bold.ttf", 120)
     dc.text(STREAK_POS,"%d" %(streak), fill='#EE7361', spacing=10, align='right',font=Streakfont)
     #終わったので表示
     Canbas.show()
